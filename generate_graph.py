@@ -135,11 +135,4 @@ def generate_graph_from_parameters(n1: int, n2: int, b: int, p1: float, p2: floa
     return G
 
 # then create the graph! how to visualize graphs?????
-
-social_network = generate_graph_from_parameters(8, 8, 5, 0.2, 0.5, 0.8)
-for node in list(social_network.nodes(data = True)):
-    print(node)
-for edge in list(social_network.edges):
-    print(edge)
-
 # source venv/bin/activate

@@ -12,12 +12,14 @@
 
 import networkx as nx
 import random as rand
+# import numpy as np 
 import generate_graph
 
 # first create the social network and initialize parameters
-social_network = generate_graph.generate_graph_from_parameters(8, 8, 5, 0.5, 0.5, 0.5)
+social_network = generate_graph.generate_graph_from_parameters(3, 3, 0, 0.5, 0.5, 0.5)
 social_network_nodes = list(social_network) # just nodes, no node attributes!
 social_network_edges = list(social_network.edges())
+adj_mat = nx.adjacency_matrix(social_network)
 
 num_starters = 2 # number of nodes that will start with a message
 c = 0.29 # confidence bound
@@ -32,7 +34,7 @@ message_ideologies = [message_zero_ideology, message_one_ideology, message_two_i
 # then pick the starting nodes and fill in the 'messages' dictionary: key = which message it is [0, 1, 2, or 3], values = {degree of starting node, ideology of content, language of starting node, bilingual or not}
 starters = rand.sample(social_network_nodes, num_starters)
 messages = {}
-for (node, i) in (starters, range(0, len(starters))): # node cycles through the list "starters", while i cycles through 0, 1, 2, 3 or 0, 1
+for node, i in zip(starters, range(0, len(starters))): # node cycles through the list "starters", while i cycles through 0, 1, 2, 3 or 0, 1
     message_attrs = {}
 
     # get the degree of the starting node
@@ -59,12 +61,22 @@ for (node, i) in (starters, range(0, len(starters))): # node cycles through the 
     messages[i] = message_attrs
 
 # replace the ideology of each starting node with the ideology of the message
+for node, i in zip(starters, range(0, len(message_ideologies))):
+    social_network.nodes[node]["Node Attributes"]["Political Ideology"] = message_ideologies[i]
+    node_neighbors = adj_mat[node:, ] # figure this shit out!!!
+    print(node_neighbors)
+# then look for all its neighbors
+
+
+
+# then filter for all the neighbors who speak the appropriate language
+
+# then filter for all the neighbors who are within c
     
+# then share the message!
+
 # now run the simulation: create a new graph for each message and compute network statistics at each step
 
 
-#for node in starters:
-    # get the node's language status
-    #if social_network.nodes[node]["Node Attributes"]["Mother Tongue"] == "English":
         
 
