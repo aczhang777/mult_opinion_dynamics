@@ -32,7 +32,7 @@ message_ideologies = [message_zero_ideology, message_one_ideology, message_two_i
 # then pick the starting nodes and fill in the 'messages' dictionary: key = which message it is [0, 1, 2, or 3], values = {degree of starting node, ideology of content, language of starting node, bilingual or not}
 starters = rand.sample(social_network_nodes, num_starters)
 messages = {}
-for (node, i) in (starters, len(starters)): # node cycles through the list "starters", while i cycles through 0, 1, 2, 3 or 0, 1
+for (node, i) in (starters, range(0, len(starters))): # node cycles through the list "starters", while i cycles through 0, 1, 2, 3 or 0, 1
     message_attrs = {}
 
     # get the degree of the starting node
