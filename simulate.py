@@ -9,17 +9,20 @@
 # b) if the sharing node is not bilingual, then they will only pick their Chinese speaking neighbors. If the sharing node is bilingual, then:
 # if the message is in Chinese, they will share with all their Chinese speaking neighbors. For their English speaking neighbors, they will share it with all their English speaking neighbors with probability "Translate and Share" for that node.
 # if the message is in English, they will share with all their English speaking neighbors. For their Chinese speaking neighbors, they will share it with all their Chinese speaking neighbors with probability "Translate and Share" for that node!
+# do we allow for overlap - as in, can nodes hear > 1 message? yes! maybe? maybe read paper...
 
 import networkx as nx
 import random as rand
-# import numpy as np 
+import numpy as np 
 import generate_graph
 
 # first create the social network and initialize parameters
 social_network = generate_graph.generate_graph_from_parameters(3, 3, 0, 0.5, 0.5, 0.5)
 social_network_nodes = list(social_network) # just nodes, no node attributes!
 social_network_edges = list(social_network.edges())
-adj_mat = nx.adjacency_matrix(social_network)
+print(social_network_edges)
+adj_mat = nx.adjacency_matrix(social_network).toarray() # this is of class ndarray, which is from numpy!
+print(adj_mat)
 
 num_starters = 2 # number of nodes that will start with a message
 c = 0.29 # confidence bound
@@ -60,12 +63,21 @@ for node, i in zip(starters, range(0, len(starters))): # node cycles through the
 
     messages[i] = message_attrs
 
+# maybe some kind of while loop goes here? like every time you pass a message onto a node, you add that node to a list of vectors, as long as that list is nonempty you keep going through this for loop?
+# or maybe it should be a while loop that starts after the for loop? either could work (though one might be faster than the other...)
 # replace the ideology of each starting node with the ideology of the message
 for node, i in zip(starters, range(0, len(message_ideologies))):
     social_network.nodes[node]["Node Attributes"]["Political Ideology"] = message_ideologies[i]
-    node_neighbors = adj_mat[node:, ] # figure this shit out!!!
-    print(node_neighbors)
-# then look for all its neighbors
+    node_neighbors = np.nonzero(adj_mat[node])[0] 
+    # print("The neighbors of node " + str(node) + " are " + str(node_neighbors))
+    neighbors_to_share_with = []
+    bil_stat = social_network.nodes[node]["Node Attributes"]["Bilingual Status"]
+    for neighbor in node_neighbors:
+        if bil_stat == "Not Bilingual" and social_network.nodes[node]["Node Attributes"]["Mother Tongue"] == social_network.nodes[neighbor]["Node Attributes"]["Mother Tongue"]:
+            if abs(social_network.nodes[neighbor]["Node Attributes"]["Political Ideology"] - message_ideologies[i]) <= c:
+                neighbors_to_share_with.append(neighbor)
+        elif bil_stat == "Bilingual": # add more conditions?
+
 
 
 
