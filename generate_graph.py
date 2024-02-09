@@ -42,10 +42,7 @@ def generate_graph_from_parameters(n1: int, n2: int, b: int, p1: float, p2: floa
         # third is the fact that they are not bilingual
         attributes["Bilingual Status"] = "Not Bilingual"
 
-        # fourth is the fact that they are not willing to receive foreign info
-        attributes["Receive Foreign Info"] = 0
-
-        # fifth is the fact that they are not going to translate and share any information
+        # fourth is the fact that they are not going to translate and share any information
         attributes["Translate and Share"] = 0
 
         # now we add this dictionary to our larger dictionary
@@ -73,20 +70,11 @@ def generate_graph_from_parameters(n1: int, n2: int, b: int, p1: float, p2: floa
         else:
             attributes["Bilingual Status"] = "Not Bilingual"
 
-        # fourth: if not bilingual, then this attribute is 0. Otherwise, fourth is how willing they are to consume/receive content when it's not in their mother tongue
-        if attributes.get("Bilingual Status") == "Not Bilingual": # if they are not bilingual
-            attributes["Receive Foreign Info"] = 0
-        else: # if they are bilingual
-            while len(attributes) < 4:
-                num = rand.gauss(mu = 0.5, sigma = 0.1667)
-                if 0 <= num <= 1:
-                    attributes["Receive Foreign Info"] = num
-
-        # fifth: if not bilingual, then this attribute is 0. Otherwise, fifth is how willing they are to translate and share content that's not in their mother tongue
+        # fourth: if not bilingual, then this attribute is 0. Otherwise, fifth is how willing they are to translate and share content that's not in their mother tongue
         if attributes.get("Bilingual Status") == "Not Bilingual":
             attributes["Translate and Share"] = 0
         else:
-            while len(attributes) < 5:
+            while len(attributes) < 4:
                 num = rand.gauss(mu = 0.5, sigma = 0.1667)
                 if 0 <= num <= 1:
                     attributes["Translate and Share"] = num
