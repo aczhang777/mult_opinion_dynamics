@@ -107,7 +107,3 @@ for node, i in zip(starters, range(0, len(message_ideologies))):
 # then share the message!
 
 # now run the simulation: create a new graph for each message and compute network statistics at each step
-
-
-        
-
